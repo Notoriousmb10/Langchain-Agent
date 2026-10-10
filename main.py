@@ -30,9 +30,9 @@ vector_store = Chroma.from_documents(
 )
 
 
-query = "Who is the football player that the user idolizes the most?"
+query = "Why do user loves football so much?"
 
-retriever = vector_store.as_retriever(search_kwargs={"k": 1})
+retriever = vector_store.as_retriever(search_kwargs={"k": 3})
 
 results = retriever.invoke(query)
 
@@ -51,7 +51,12 @@ llm = ChatGoogleGenerativeAI(
 prompt = ChatPromptTemplate.from_messages([
     (
         "system",
-        f"""You are a helpful assistant, that answers users queries, using the {context} as context. 
+        f"""You are a helpful assistant, that answers users queries, using the context
+        Look for the answer for the user provided query in the context. 
+        
+        Context: {context}
+        
+        If you are able to find the answer in the context, provide the answer according to the query. If you are unable to find the answer in the context, respond with "I don't know".
         Please answer the query in a concise and informative manner."""
     ),
     ("human", "{query}")
@@ -62,7 +67,7 @@ structured_llm = llm.with_structured_output(LLMResponse)
 chain = prompt | structured_llm
 
 response = chain.invoke({
-    "query": "Give information for the user favourite player?",
+    "query": "Whats the name of the football player that the user idolizes the most?",
     "context": context
 })
 
