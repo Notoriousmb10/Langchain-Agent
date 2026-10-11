@@ -1,1 +1,5 @@
 .env
+chroma_db
+.ingestion_manifest.json
+__pycache__
+venv
