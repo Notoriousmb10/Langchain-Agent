@@ -16,8 +16,9 @@ def ingest():
         manifest = {}
 
     text_splitter = RecursiveCharacterTextSplitter(
-        chunk_size=100,
-        chunk_overlap=20,
+        chunk_size=500,
+        chunk_overlap=80,
+        add_start_index=True,
     )
 
     files = sorted(data_dir.glob("*.txt"))
